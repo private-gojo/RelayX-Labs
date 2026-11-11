@@ -29,11 +29,23 @@ jobs:
 
       - name: Sync OpenSSH
         run: |
-          git subtree pull --prefix=upstream/openssh https://github.com/openssh/openssh-portable.git master
+          git subtree pull --prefix=upstream-core/openssh https://github.com/openssh/openssh-portable.git master
 
       - name: Sync Dropbear
         run: |
-          git subtree pull --prefix=upstream/dropbear https://github.com/mkj/dropbear.git main
+          git subtree pull --prefix=upstream-core/dropbear https://github.com/mkj/dropbear.git main
+
+      - name: Sync Xray-core
+        run: |
+          git subtree pull --prefix=upstream-core/xray https://github.com/XTLS/Xray-core.git main
+
+      - name: Sync sing-box
+        run: |
+          git subtree pull --prefix=upstream-core/sing-box https://github.com/SagerNet/sing-box.git testing
+
+      - name: Sync OpenVPN
+        run: |
+          git subtree pull --prefix=upstream-core/openvpn https://github.com/OpenVPN/openvpn.git master
 
       - name: Push updates to main
         run: git push origin HEAD:main
