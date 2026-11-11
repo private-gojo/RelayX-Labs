@@ -1,0 +1,39 @@
+name: Upstream Sync
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync OpenSSH
+        run: |
+          git subtree pull --prefix=upstream/openssh https://github.com/openssh/openssh-portable.git master
+
+      - name: Sync Dropbear
+        run: |
+          git subtree pull --prefix=upstream/dropbear https://github.com/mkj/dropbear.git main
+
+      - name: Push updates to main
+        run: git push origin HEAD:main
